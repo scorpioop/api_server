@@ -1,6 +1,8 @@
 const express = require('express')
 const cors = require('cors')
 var bodyParser = require('body-parser');
+const joi = require('joi')
+
 
 const app = express()
 
@@ -23,6 +25,11 @@ app.use(function (req, res, next) {
 
 const userRouter=require('./router/user')
 app.use('/api',userRouter)
+
+app.use((err,req,res,next)=>{
+  if(err instanceof joi.ValidationError) return res.cc(err)
+  return res.cc(err)
+})
 
 app.listen(3007,()=>{
     console.log('api server running at http://127.0.0.1:3007');

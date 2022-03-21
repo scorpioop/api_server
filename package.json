@@ -18,13 +18,18 @@
   },
   "homepage": "https://github.com/scorpioop/api_server#readme",
   "dependencies": {
+    "@escook/express-joi": "^1.1.1",
+    "@hapi/joi": "17.1.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "install": "^0.13.0",
+    "joi": "^17.6.0",
     "mysql": "^2.18.1",
     "mysql-ssh": "^1.0.6",
     "mysql2": "^2.3.3",
+    "npm": "^8.5.5",
     "ssh2": "^1.6.0"
   }
 }
