@@ -21,6 +21,8 @@ const password = joi
 const id = joi.number().integer().min(1).required()
 const nickname=joi.string().required()
 const email= joi.string().email().required()
+
+const avadar = joi.string().dataUri().required()
 exports.reg_login_schema = {
   // 表示需要对 req.body 中的数据进行验证
   body: {
@@ -39,5 +41,11 @@ exports.update_pwd={
   body:{
     oldPwd:password,
     newPwd:joi.not(joi.ref('oldPwd')).concat(password)
+  }
+}
+
+exports.update_avatar={
+  body:{
+    avadar
   }
 }

@@ -80,3 +80,22 @@ exports.updatePwd=(req,res)=>{
         })
     })
 }
+
+exports.updateAvatar=(req,res)=>{
+    const sqlStr = "update ev_users set user_pic=? where id=?"
+    db().then((client)=>{
+        client.query(sqlStr,[req.body?.avadar,req.user.id],(err,results)=>{
+            if(err){
+                mysqlssh.close()
+                return res.cc(err)
+            }
+            if(results.affectedRows.length<1){
+                mysqlssh.close()
+                return res.cc("更新失败")
+            }
+            mysqlssh.close()
+            return res.cc("更新头像成功",0)
+        })
+    })
+    
+}
