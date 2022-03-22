@@ -2,6 +2,8 @@ const express = require('express')
 const cors = require('cors')
 var bodyParser = require('body-parser');
 const joi = require('joi')
+const expressJwt=require('express-jwt')
+const config= require('./config')
 
 
 const app = express()
@@ -22,12 +24,18 @@ app.use(function (req, res, next) {
     }
     next()
   })
-
+//设置需要token的api
+app.use(expressJwt({secret:config.jwtSecretKey}).unless({path:[/^\/api\//]}))
+//注册登录
 const userRouter=require('./router/user')
 app.use('/api',userRouter)
+//得到用户信息
+const userInfoRouter=require('./router/userInfo')
+app.use('/my',userInfoRouter)
 
 app.use((err,req,res,next)=>{
   if(err instanceof joi.ValidationError) return res.cc(err)
+  if(err.name==="UnauthorizedError") return res.cc("身份认证失败")
   return res.cc(err)
 })
 

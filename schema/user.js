@@ -18,10 +18,26 @@ const password = joi
   .required()
 
 // 注册和登录表单的验证规则对象
+const id = joi.number().integer().min(1).required()
+const nickname=joi.string().required()
+const email= joi.string().email().required()
 exports.reg_login_schema = {
   // 表示需要对 req.body 中的数据进行验证
   body: {
     username,
     password,
   },
+}
+exports.update_userinfo_schema={
+  body:{
+    nickname,
+    email
+  }
+}
+
+exports.update_pwd={
+  body:{
+    oldPwd:password,
+    newPwd:joi.not(joi.ref('oldPwd')).concat(password)
+  }
 }

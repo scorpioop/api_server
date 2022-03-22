@@ -1,6 +1,8 @@
 const db = require("../db/index");
 const mysqlssh = require("mysql-ssh");
 const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken')
+const config = require('../config')
 
 exports.regUser = (req, res) => {
   const userinfo = req.body;
@@ -53,14 +55,26 @@ exports.regUser = (req, res) => {
 exports.login = (req, res) => {
   const sqlStr="select * from ev_users where username=?"
   db().then((client)=>{
-    client.query(sqlStr, req.body?.username,function (err,results) {
+    client.query(sqlStr, req.body?.username,function (err,results,fields) {
       if(err){
         return res.cc(err)
       }else{
         if(results.length>=1){
           let pwd = results[0]?.password
-          console.log(pwd);
+          const compareResult=bcrypt.compareSync(req.body?.password,pwd)
           mysqlssh.close()
+          if(!compareResult){
+            return res.cc("登录失败")
+          }else{
+            let user = {...results[0],password:'',user_pic:""}
+            const tokenStr = jwt.sign(user, config.jwtSecretKey,{expiresIn:'10h'})
+            return res.send({
+              status:0,
+              message:"登录成功",
+              token:"Bearer "+tokenStr
+            })
+          }
+         
         }else{
           mysqlssh.close();
           return res.cc("没有该用户")
