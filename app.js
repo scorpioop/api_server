@@ -26,6 +26,9 @@ app.use(function (req, res, next) {
   })
 //设置需要token的api
 app.use(expressJwt({secret:config.jwtSecretKey}).unless({path:[/^\/api\//]}))
+//注册静态资源
+app.use('/api/uploads', express.static('./uploads'))
+
 //注册登录
 const userRouter=require('./router/user')
 app.use('/api',userRouter)
