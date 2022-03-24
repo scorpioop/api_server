@@ -15,3 +15,11 @@ exports.delete_cate_schema={
     id
   }
 }
+
+exports.update_cate={
+  body:{
+    id,
+    name,
+    alias
+  }
+}

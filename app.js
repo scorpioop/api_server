@@ -37,6 +37,10 @@ app.use('/my',userInfoRouter)
 const artCate = require('./router/artcate')
 app.use('/my/article',artCate)
 
+//添加文章
+const article = require('./router/article')
+app.use('/my/article',article)
+
 app.use((err,req,res,next)=>{
   if(err instanceof joi.ValidationError) return res.cc(err)
   if(err.name==="UnauthorizedError") return res.cc("身份认证失败")
