@@ -3,11 +3,16 @@ const db = require("../db/index");
 const mysqlssh = require("mysql-ssh");
 
 exports.addArt=async(req,res)=>{
-  const need = {
+  console.log(req.body);
+  let need = {
     ...req.body,
-    cover_img:path.join('/uploads',req.file.filename),
+    cover_img:path.join('/uploads',req.files["cover_img"][0].filename),
     publish_date:new Date(),
-    author_id:req.user.id
+    author_id:req.user.id,
+    
+  }
+  if(req.files["content_file"]){
+    need={...need,content_file:path.join('/uploads',req.files["content_file"][0].filename),}
   }
   const sqlStr="insert into ev_articles set ?"
   const client = await db()

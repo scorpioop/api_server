@@ -104,7 +104,7 @@ exports.updateCate=async(req,res)=>{
   client.query(sql, [req.body.id, req.body.name, req.body.alias], (err, results) => {
     // 执行 SQL 语句失败
     if (err) return res.cc(err)
-  
+    console.log(results);
     // 分类名称 和 分类别名 都被占用
     if (results.length === 2)  {
       mysqlssh.close()
