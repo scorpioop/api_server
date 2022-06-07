@@ -3,7 +3,7 @@ const db = require("../db/index");
 const mysqlssh = require("mysql-ssh");
 
 exports.addArt=async(req,res)=>{
-  console.log(req.body);
+  
   let need = {
     ...req.body,
     cover_img:path.join('/uploads',req.files["cover_img"][0].filename),

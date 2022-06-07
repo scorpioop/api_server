@@ -5,9 +5,11 @@ const joi = require('joi')
 const expressJwt=require('express-jwt')
 const config= require('./config')
 
+// 使用swagger API 文档
+var swaggerInstall = require('./utils/swagger')
 
 const app = express()
-
+swaggerInstall(app)
 app.use(cors())
 app.use(express.urlencoded({ extended: false }))
 app.use(bodyParser.json());

@@ -17,7 +17,6 @@ exports.getCategory = async (req, res) => {
   });
 };
 exports.addArticleCates = async (req, res) => {
-  console.log(req.body);
   sql = "select * from ev_article_cate where name=? or alias =?";
   const client = await db();
   client.query(sql, [req.body?.name, req.body?.alias], (err, results) => {

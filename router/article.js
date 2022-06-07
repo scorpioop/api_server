@@ -10,6 +10,50 @@ var storage = multer.diskStorage({
         cb(null , file.originalname.split('.')[0]+'_'+Date.now()+'.'+file.originalname.split('.')[1]);
     }
   });
+  /**,
+ * @swagger
+ * /my/article/add:
+ *    post:
+ *      tags:
+ *      - 文章
+ *      summary: 添加文章
+ *      consumes:
+ *      - multipart/form-data
+ *      produces:
+ *      - application/json
+ *      security:
+ *      - ApiKeyAuth: []
+ *      requestBody:
+ *         content:
+ *           multipart/form-data:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 title:
+ *                   type: string
+ *                   required: true
+ *                 cover_img:
+ *                   type: string
+ *                   format: binary
+ *                 content_file:
+ *                   type: string
+ *                   format: binary
+ *                 state:
+ *                   type: string
+ *                 cate_id:
+ *                    type: integer
+ *                 content:
+ *                   type: string
+ *      responses:
+ *        200:
+ *          description: successful operation
+ *          schema:
+ *            ref: #/definitions/Order
+ *        400:
+ *          description: Invalid ID supplied
+ *        404:
+ *          description: Order not found
+ * */
 const upload = multer({ storage: storage })
 const router = express.Router()
 const article = require('../router_handler/article')
