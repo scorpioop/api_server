@@ -25,6 +25,19 @@ const { reg_login_schema } = require('../schema/user')
  *           username: "admin"
  *           password: "123456"
  */
+/**
+ * @swagger
+ * definitions:
+ *  wxLogParams:
+ *      description: 通知添加参数
+ *      properties:
+ *          code:
+ *              type: string    #参数类型
+ *              description: wechat code     #参数描述
+ *          userInfo:
+ *              type: object
+ *          
+ */
 const user_handler=require('../router_handler/user')
 /**,
  * @swagger
@@ -81,5 +94,33 @@ router.post('/reguser',expressJoi(reg_login_schema),user_handler.regUser)
  * */
 
 router.post('/login',expressJoi(reg_login_schema),user_handler.login)
+/**,
+ * @swagger
+ * /api/wx/login:
+ *    post:
+ *      tags:
+ *      - 用户
+ *      summary: 微信登录
+ *      produces:
+ *      - application/json
+ *      requestBody:
+ *       required: true
+ *       content:
+ *          application/json:
+ *              schema:
+ *                  $ref: '#/definitions/wxLogParams'
+ *      responses:
+ *        200:
+ *          description: successful operation
+ *          schema:
+ *            ref: #/definitions/Order
+ *        400:
+ *          description: Invalid ID supplied
+ *        404:
+ *          description: Order not found
+ * */
+
+
+router.post('/wx/login',user_handler.wxlogin)
 
 module.exports=router

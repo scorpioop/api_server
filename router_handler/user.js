@@ -84,3 +84,61 @@ exports.login = (req, res) => {
     })
   })
 };
+var axios = require('axios');
+  
+exports.wxlogin=async(req,res)=>{
+  console.log(req.body);
+  let code = req.body.code
+  const result =await axios.get(`https://api.weixin.qq.com/sns/jscode2session?appid=wxa5cd2b4149991741&secret=a1d9ddf42f15ee5aed33305ede280b43&js_code=${code}&grant_type=authorization_code`)
+  console.log(result.data);
+  const sqlStr = "select * from ev_users where username= '";
+  db()
+    .then((client) => {
+      client.query(
+        sqlStr + result?.data?.openid + "'",
+        function (err, results, fields) {
+          if (err) throw err;
+
+          if (results.length > 0) {
+            const tokenStr = jwt.sign({opena_id:result?.data?.openid,nickname:result?.body?.userinfo?.nickName}, config.jwtSecretKey,{expiresIn:'10h'})
+            return res.send({
+              status:0,
+              message:"登录成功",
+              token:"Bearer "+tokenStr
+            })
+            
+          } else {
+            
+            const sql = "insert into ev_users set ?";
+            client.query(
+              sql,
+              { username: userinfo.username, password: userinfo.password },
+              function (err, results) {
+                if (err) {
+                  return res.send({ status: 1, message: err.message });
+                }
+                // SQL 语句执行成功，但影响行数不为 1
+                if (results.affectedRows !== 1) {
+                  mysqlssh.close();
+                  return res.cc("注册用户失败，请稍后再试！");
+                } else {
+                  // 注册成功
+                  mysqlssh.close();
+                  return res.cc("注册成功！", 0);
+                }
+              }
+            );
+          }
+        }
+      );
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send({
+        status: 1,
+        message: "用户名或密码不合法",
+      });
+    });
+  return res.send({status:0,
+    message:"登录成功"})
+}

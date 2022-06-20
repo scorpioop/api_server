@@ -34,6 +34,8 @@ app.use('/api/uploads', express.static('./uploads'))
 //注册登录
 const userRouter=require('./router/user')
 app.use('/api',userRouter)
+//得到最新文章
+
 //得到用户信息
 const userInfoRouter=require('./router/userInfo')
 app.use('/my',userInfoRouter)
