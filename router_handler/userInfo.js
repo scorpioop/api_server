@@ -3,9 +3,9 @@ const mysqlssh = require("mysql-ssh");
 const bcrypt = require("bcryptjs");
 const { result } = require("@hapi/joi/lib/base");
 exports.getUserInfo=(req,res)=>{
-    const sqlStr = 'select id, username, nickname, email, user_pic from ev_users where id=?'
+    const sqlStr = 'select id, username, nickname, email, user_pic from ev_users where username=?'
     db().then((client)=>{
-        client.query(sqlStr,req.user.id,(err, results)=>{
+        client.query(sqlStr,req.user.username,(err, results)=>{
             if(err) return res.cc(err)
             if(results.length<1){
                 mysqlssh.close()

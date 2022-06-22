@@ -7,7 +7,7 @@ exports.addArt=async(req,res)=>{
   let need = {
     ...req.body,
     publish_date:new Date(),
-    author_id:req.user.id,
+    author_id:req.user.username,
     
   }
   if(req.files["cover_img"]){
