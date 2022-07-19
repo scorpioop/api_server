@@ -80,6 +80,39 @@ var storage = multer.diskStorage({
  *          description: Order not found
  * */
 
+   /**,
+ * @swagger
+ * /my/article/del:
+ *    post:
+ *      tags:
+ *      - 文章
+ *      summary: 删除文章
+ *      consumes:
+ *      - application/json
+ *      produces:
+ *      - application/json
+ *      security:
+ *      - ApiKeyAuth: []
+ *      requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   required: true
+ *      responses:
+ *        200:
+ *          description: successful operation
+ *          schema:
+ *            ref: #/definitions/Order
+ *        400:
+ *          description: Invalid ID supplied
+ *        404:
+ *          description: Order not found
+ * */
+
   /**,
  * @swagger
  * /my/article/update:
@@ -134,6 +167,8 @@ const expressJoi = require('@escook/express-joi')
 
 // router.post('/add', upload.fields([{name:'cover_img',maxCount:1},{name:'content_file',maxCount:1}]),expressJoi(article_schema.addArticle),article.addArt)
 router.get('/',article.getArticle)
+router.post('/del',article.delArticle)
 router.post('/add', expressJoi(article_schema.addArticle),article.addArt)
+
 router.post('/update', upload.fields([{name:'cover_img',maxCount:1},{name:'content_file',maxCount:1}]),expressJoi(article_schema.updateArticle),article.updateArt)
 module.exports=router

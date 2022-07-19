@@ -4,14 +4,14 @@ const bcrypt = require("bcryptjs");
 const { result } = require("@hapi/joi/lib/base");
 exports.getUserInfo=(req,res)=>{
     const sqlStr = 'select id, username, nickname, email, user_pic from ev_users where username=?'
-    db().then((client)=>{
-        client.query(sqlStr,req.user.username,(err, results)=>{
+    
+        db.query(sqlStr,req.user.username,(err, results)=>{
             if(err) return res.cc(err)
             if(results.length<1){
-                mysqlssh.close()
+                
                 return res.cc("获取失败")
             }else{
-                mysqlssh.close()
+                
                 return res.send({
                     status:0,
                     message:'成功',
@@ -20,7 +20,7 @@ exports.getUserInfo=(req,res)=>{
                 })
             }
         })
-    })
+   
 }
 exports.updateUserInfo=(req,res)=>{
     const sqlStr = "update ev_users set ? where id=?"

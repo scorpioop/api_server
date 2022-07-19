@@ -1,6 +1,4 @@
-const path= require('path')
-const db = require("../db/index");
-const mysqlssh = require("mysql-ssh");
+
 
 exports.add=async(req,res)=>{
     let need={}

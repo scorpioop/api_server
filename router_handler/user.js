@@ -92,18 +92,19 @@ exports.wxlogin = async (req, res) => {
     `https://api.weixin.qq.com/sns/jscode2session?appid=wxa5cd2b4149991741&secret=a1d9ddf42f15ee5aed33305ede280b43&js_code=${code}&grant_type=authorization_code`
   );
   const sqlStr = "select * from ev_users where username= '";
-  db()
-    .then((client) => {
-      client.query(
+      
+      db.query(
         sqlStr + result?.data?.openid + "'",
         function (err, results, fields) {
           if (err) throw err;
 
           if (results.length > 0) {
+            console.log(req?.body?.userInfo?.nickName,req?.body?.userInfo?.avatarUrl);
             const tokenStr = jwt.sign(
               {
                 username: result?.data?.openid,
-                nickname: result?.body?.userinfo?.nickName,
+                nickname: req?.body?.userInfo?.nickName,
+                user_pic: req?.body?.userInfo?.avatarUrl
               },
               config.jwtSecretKey,
               { expiresIn: "10h" }
@@ -115,7 +116,7 @@ exports.wxlogin = async (req, res) => {
             });
           } else {
             const sql = "insert into ev_users set ?";
-            client.query(
+            db.query(
               sql,
               {
                 nickname: req?.body?.userInfo?.nickName,
@@ -128,15 +129,16 @@ exports.wxlogin = async (req, res) => {
                 }
                 // SQL 语句执行成功，但影响行数不为 1
                 if (results.affectedRows !== 1) {
-                  mysqlssh.close();
+                  
                   return res.cc("注册用户失败，请稍后再试！");
                 } else {
                   // 注册成功
-                  mysqlssh.close();
+                  
                   const tokenStr = jwt.sign(
                     {
                       username: result?.data?.openid,
-                      nickname: result?.body?.userinfo?.nickName,
+                      nickname: req?.body?.userInfo?.nickName,
+                      user_pic: req?.body?.userInfo?.avatarUrl
                     },
                     config.jwtSecretKey,
                     { expiresIn: "10h" }
@@ -152,13 +154,6 @@ exports.wxlogin = async (req, res) => {
           }
         }
       );
-    })
-    .catch((err) => {
-      console.log(err);
-      res.send({
-        status: 1,
-        message: "用户名或密码不合法",
-      });
-    });
+    
  
 };
