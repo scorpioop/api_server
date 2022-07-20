@@ -170,5 +170,5 @@ router.get('/',article.getArticle)
 router.post('/del',article.delArticle)
 router.post('/add', expressJoi(article_schema.addArticle),article.addArt)
 
-router.post('/update', upload.fields([{name:'cover_img',maxCount:1},{name:'content_file',maxCount:1}]),expressJoi(article_schema.updateArticle),article.updateArt)
+
 module.exports=router
